@@ -3,6 +3,8 @@ export { FixedWindow, type FixedWindowOptions } from "./algorithms/fixed-window.
 export { SlidingWindowLog, type SlidingWindowOptions } from "./algorithms/sliding-window.js";
 export { RedisFixedWindow, type RedisFixedWindowOptions } from "./redis/fixed-window-redis.js";
 export { RedisSlidingWindowLog, type RedisSlidingWindowOptions } from "./redis/sliding-window-redis.js";
+export { expressMiddleware, type ExpressRateLimitOptions } from "./adapters/express.js";
+export { nestJsGuard, type NestJsRateLimitOptions } from "./adapters/nestjs.js";
 
 import type { RateLimiter } from "./algorithms/types.js";
 import { FixedWindow, type FixedWindowOptions } from "./algorithms/fixed-window.js";
