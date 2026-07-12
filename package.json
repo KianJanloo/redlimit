@@ -1,0 +1,30 @@
+{
+  "name": "redlimit",
+  "version": "1.0.0",
+  "description": "Node.js/TypeScript rate-limiting middleware implementing sliding-window and token-bucket algorithms, backed by Redis, for Express and NestJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KianJanloo/redlimit.git"
+  },
+  "keywords": [],
+  "author": "Kian Janloo",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KianJanloo/redlimit/issues"
+  },
+  "homepage": "https://github.com/KianJanloo/redlimit#readme",
+  "dependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.1.1",
+    "ioredis": "^5.11.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  }
+}

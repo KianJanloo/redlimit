@@ -1,6 +1,36 @@
-# Ignore all files with the .mimocode extension
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp
+temp/
+
+# MiMoCode
 *.mimocode
 mimocode/
-
-# Ignore all files in the "temp" directory
-temp/
