@@ -5,14 +5,24 @@ import type { RateLimiter, RateLimitResult } from "./types.js";
  *
  * Divides time into discrete windows of `windowMs` milliseconds.
  * Each key gets a counter that resets at every window boundary.
- * Simple and memory-efficient, but allows up to 2x burst at window edges.
+ *
+ * - **Pros**: simple, O(1) memory per key
+ * - **Cons**: allows up to 2x burst at window edges
+ *
+ * @example
+ * ```ts
+ * const limiter = new FixedWindow({ windowMs: 60_000, max: 10 });
+ * limiter.consume("ip:1.2.3.4"); // { allowed: true, remaining: 9, ... }
+ * ```
  */
 interface WindowEntry {
+  /** Number of requests in the current window. */
   count: number;
-  /** Timestamp of the current window's start (aligned to windowMs). */
+  /** Timestamp of the current window's start (aligned to `windowMs`). */
   windowStart: number;
 }
 
+/** Options for {@link FixedWindow}. */
 export interface FixedWindowOptions {
   /** Duration of each window in milliseconds. */
   windowMs: number;
@@ -25,16 +35,28 @@ export class FixedWindow implements RateLimiter {
   private windowMs: number;
   private max: number;
 
+  /**
+   * @param opts - Window duration and max request count.
+   */
   constructor(opts: FixedWindowOptions) {
     this.windowMs = opts.windowMs;
     this.max = opts.max;
   }
 
-  /** Snap a timestamp to the start of its fixed window. */
+  /**
+   * Snap a timestamp to the start of its fixed window.
+   * e.g. `Math.floor(1500 / 1000) * 1000 = 1000`
+   */
   private getWindowStart(now: number): number {
     return Math.floor(now / this.windowMs) * this.windowMs;
   }
 
+  /**
+   * Record a request and check if it's within the window limit.
+   *
+   * @param key - Rate-limit bucket identifier.
+   * @returns Allowance status, remaining budget, and time until reset.
+   */
   consume(key: string): RateLimitResult {
     const now = Date.now();
     const windowStart = this.getWindowStart(now);
@@ -55,6 +77,12 @@ export class FixedWindow implements RateLimiter {
     };
   }
 
+  /**
+   * Check current state without consuming a request.
+   *
+   * @param key - Rate-limit bucket identifier.
+   * @returns Current state with count unchanged.
+   */
   peek(key: string): RateLimitResult {
     const now = Date.now();
     const windowStart = this.getWindowStart(now);
@@ -72,6 +100,11 @@ export class FixedWindow implements RateLimiter {
     };
   }
 
+  /**
+   * Clear all tracked state for a key.
+   *
+   * @param key - Rate-limit bucket identifier.
+   */
   reset(key: string): void {
     this.store.delete(key);
   }

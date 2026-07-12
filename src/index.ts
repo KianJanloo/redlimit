@@ -6,15 +6,31 @@ import type { RateLimiter } from "./algorithms/types.js";
 import { FixedWindow, type FixedWindowOptions } from "./algorithms/fixed-window.js";
 import { SlidingWindowLog, type SlidingWindowOptions } from "./algorithms/sliding-window.js";
 
+/** Available rate-limiting strategies. */
 export type Strategy = "fixed-window" | "sliding-window";
 
+/** Options for the {@link createRateLimiter} factory. */
 export interface CreateRateLimiterOptions {
+  /** Strategy to use. Defaults to `"sliding-window"`. */
   strategy?: Strategy;
+  /** Duration of the rate-limit window in milliseconds. */
   windowMs: number;
+  /** Maximum requests allowed per window. */
   max: number;
 }
 
-/** Factory that picks a strategy and returns a ready-to-use RateLimiter. */
+/**
+ * Create a rate limiter instance.
+ *
+ * @example
+ * ```ts
+ * const limiter = createRateLimiter({ strategy: "sliding-window", windowMs: 60_000, max: 100 });
+ * const result = limiter.consume("user:123");
+ * ```
+ *
+ * @param opts - Configuration for the rate limiter.
+ * @returns A {@link RateLimiter} instance ready to consume requests.
+ */
 export function createRateLimiter(opts: CreateRateLimiterOptions): RateLimiter {
   switch (opts.strategy) {
     case "fixed-window":
