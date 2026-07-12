@@ -1,6 +1,8 @@
 export type { RateLimiter, RateLimitResult } from "./algorithms/types.js";
 export { FixedWindow, type FixedWindowOptions } from "./algorithms/fixed-window.js";
 export { SlidingWindowLog, type SlidingWindowOptions } from "./algorithms/sliding-window.js";
+export { RedisFixedWindow, type RedisFixedWindowOptions } from "./redis/fixed-window-redis.js";
+export { RedisSlidingWindowLog, type RedisSlidingWindowOptions } from "./redis/sliding-window-redis.js";
 
 import type { RateLimiter } from "./algorithms/types.js";
 import { FixedWindow, type FixedWindowOptions } from "./algorithms/fixed-window.js";

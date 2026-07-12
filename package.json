@@ -14,11 +14,24 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "test": "vitest run",
+    "test:redis": "vitest run test/redis/",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["rate-limit", "rate-limiter", "express", "nestjs", "redis", "sliding-window", "token-bucket"],
+  "keywords": [
+    "rate-limit",
+    "rate-limiter",
+    "express",
+    "nestjs",
+    "redis",
+    "sliding-window",
+    "token-bucket"
+  ],
   "license": "MIT",
+  "dependencies": {
+    "ioredis": "^5.6.0"
+  },
   "devDependencies": {
+    "testcontainers": "^12.0.4",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0",
     "vitest": "^1.6.0"
