@@ -79,6 +79,25 @@ describe("SlidingWindowLog", () => {
     expect(limiter.consume("a").remaining).toBe(3);
   });
 
+  it("peek returns full budget for a fresh key with no entry", () => {
+    const limiter = new SlidingWindowLog({ windowMs: 1000, max: 5 });
+
+    const result = limiter.peek("nonexistent");
+    expect(result.allowed).toBe(true);
+    expect(result.remaining).toBe(5);
+    expect(result.resetMs).toBe(1000);
+  });
+
+  it("returns full resetMs when timestamps array is empty after pruning", () => {
+    const limiter = new SlidingWindowLog({ windowMs: 500, max: 3 });
+
+    limiter.consume("a");
+    vi.advanceTimersByTime(600); // all entries pruned
+
+    const result = limiter.consume("a");
+    expect(result.remaining).toBe(2);
+  });
+
   it("reset clears key state", () => {
     const limiter = new SlidingWindowLog({ windowMs: 1000, max: 1 });
 

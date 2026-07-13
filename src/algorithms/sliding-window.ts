@@ -64,7 +64,7 @@ export class SlidingWindowLog implements RateLimiter {
       allowed: timestamps.length <= this.max,
       remaining: Math.max(0, this.max - timestamps.length),
       // Time until the oldest entry in the window expires
-      resetMs: timestamps.length > 0 ? timestamps[0] + this.windowMs - now : this.windowMs,
+      resetMs: timestamps[0] + this.windowMs - now,
     };
   }
 

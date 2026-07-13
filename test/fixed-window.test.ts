@@ -75,6 +75,28 @@ describe("FixedWindow", () => {
     expect(result.resetMs).toBe(1000);
   });
 
+  it("peek returns full budget for a fresh key with no entry", () => {
+    const limiter = new FixedWindow({ windowMs: 1000, max: 5 });
+
+    const result = limiter.peek("nonexistent");
+    expect(result.allowed).toBe(true);
+    expect(result.remaining).toBe(5);
+    expect(result.resetMs).toBe(1000);
+  });
+
+  it("peek returns full budget after window expires", () => {
+    const limiter = new FixedWindow({ windowMs: 1000, max: 2 });
+
+    limiter.consume("a");
+    limiter.consume("a");
+    expect(limiter.peek("a").allowed).toBe(false);
+
+    vi.advanceTimersByTime(1001);
+
+    expect(limiter.peek("a").allowed).toBe(true);
+    expect(limiter.peek("a").remaining).toBe(2);
+  });
+
   it("reset clears key state", () => {
     const limiter = new FixedWindow({ windowMs: 1000, max: 1 });
 
